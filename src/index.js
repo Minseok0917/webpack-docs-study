@@ -1,7 +1,8 @@
-import AppComponent from './app'
+import render from '@/core/dom';
+import App from '@/app';
 
+render(
+	App,
+	document.getElementById('root')
+);
 
-console.log('AppComponent',AppComponent());
-
-const $app = document.getElementById('app');
-$app.textContent = process.env.mode;

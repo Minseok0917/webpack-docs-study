@@ -49,16 +49,15 @@ module.exports = {
 		},{
 			test:/\.custom-css$/,
 			use:[
-				{ loader:'style-loader'}, // html head style 
-				{ loader:'css-loader'}, // javascript css 를 읽을수 컴파일 
-				{ loader:'scss-loader'} // scss 를 css 로 컴파일
+				{ loader:'style-loader'},
+				{ loader:'css-loader'}
 			]
 			
 		}]
 	},
 	resolve:{
 		alias:{
-			'@':path.resolve(__dirname,'src')
+			'@':path.resolve(__dirname,'../src/')
 		}
 	},
 	plugins:[
