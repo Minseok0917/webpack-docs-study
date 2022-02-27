@@ -1,6 +1,8 @@
+import React from '@/core/react';
+
 export default function(){
 	return (
-		<header>
+		<header className="border py-2">
 			Header
 		</header>
 	);

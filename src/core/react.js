@@ -33,8 +33,8 @@ function h(tag,config,children){
 	}
 }
 const React = Object.freeze({
-	createElement :function(type,config,...children){		
-		if( type === 'function'){
+	createElement : function(type,config,...children){		
+		if( typeof type === 'function'){
 			return type(config);
 		}
 		return h(type,config,children)

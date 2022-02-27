@@ -1,7 +1,9 @@
+import React from '@/core/react';
+
 export default function(){
 	return (
-		<header>
+		<footer>
 			Footer
-		</header>
+		</footer>
 	);
 }
