@@ -4,26 +4,33 @@
 
 */
 
-let $app;
+let $root;
+let renderNode;
 let oldNode;
 
 function render(newNode,element){
-	$app = element;
+	$root = element;
+	renderNode = newNode;
 	oldNode = newNode();
-	
-	$app.appendChild(createElement(oldNode));
+
+	$root.appendChild(createElement(oldNode));
 }
 
 function createElement(node){
-	if( typeof node === 'string'){
+	if( typeof node === 'string' || typeof node === 'number' ){
 		return document.createTextNode(node);
 	}
 
 	const $element = document.createElement(node.tag);
 	const children = node.children.map(createElement);
 
+
 	Object.entries(node.config || {})
 		.forEach(([attr,value]) => {
+			const isHandle = attr.includes('on');
+			if( isHandle ){
+				return $element[attr] = value;
+			}
 			switch(attr){
 				case 'className':
 					$element.setAttribute('class',value);
@@ -38,4 +45,10 @@ function createElement(node){
 	return $element;
 }
 
+export function updateElement(){
+	
+
+
+	render(renderNode,$root);
+}
 export default render;

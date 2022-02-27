@@ -1,3 +1,4 @@
+import { updateElement } from '@/core/dom';
 /*
 
 	JSX 구조가 트랜스파일링 되고 함수형태로 바뀐다.
@@ -40,5 +41,33 @@ const React = Object.freeze({
 		return h(type,config,children)
 	}
 });
+
+let state;
+export function useState(initState){
+	if( state === undefined ){
+		state = initState;
+	}
+	const setState = (newState) => {
+		state = newState;
+		updateElement();
+	}
+	return [state,setState];
+}
+
+/*
+export function useState(value){
+	let cureentValue = value;
+
+
+	function setState(newValue){
+		cureentValue = newValue;
+		updateElement();
+	}
+
+	return [
+		cureentValue,
+		setState
+	];
+}*/
 
 export default React;
