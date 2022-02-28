@@ -7,13 +7,8 @@ import {
 
 
 function App(){
-	let a = 0;
-	setInterval(function(){
-		a++;
-	},1000);
 	return (
 		<div id="App">
-			{ a }
 			<TheHeader />
 			<TheFooter />
 		</div>
