@@ -1,21 +1,25 @@
+import { getContainer } from '@/core/react';
 /*
 
 	가상돔을 사용하기 위한 곳
 
 */
 
-let $root;
-let renderNode;
+let $container;
 let oldNode;
 
-function render(newNode,element){
-	$root = element;
-	renderNode = newNode;
-	oldNode = newNode();
-
-	$root.appendChild(createElement(oldNode));
+function render(node,container){
+	if( $container && oldNode ){
+		oldNode = getContainer();
+		return;
+	}
+	$container = container;
+	oldNode = node;
+	// $root.appendChild(createElement(oldNode));
 }
+export default render;
 
+/*
 function createElement(node){
 	if( typeof node === 'string' || typeof node === 'number' ){
 		return document.createTextNode(node);
@@ -51,4 +55,4 @@ export function updateElement(){
 
 	render(renderNode,$root);
 }
-export default render;
+*/

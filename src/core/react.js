@@ -33,8 +33,12 @@ function h(tag,config,children){
 		children
 	}
 }
+
+
+export let getContainer;
 const React = Object.freeze({
 	createElement : function(type,config,...children){		
+		getContainer ||= () => type(config);		
 		if( typeof type === 'function'){
 			return type(config);
 		}
@@ -42,6 +46,7 @@ const React = Object.freeze({
 	}
 });
 
+/*
 let state;
 export function useState(initState){
 	if( state === undefined ){
@@ -53,7 +58,7 @@ export function useState(initState){
 	}
 	return [state,setState];
 }
-
+*/
 /*
 export function useState(value){
 	let cureentValue = value;
