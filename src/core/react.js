@@ -1,4 +1,3 @@
-import { updateElement } from '@/core/dom';
 /*
 
 	JSX 구조가 트랜스파일링 되고 함수형태로 바뀐다.

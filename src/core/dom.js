@@ -15,7 +15,6 @@ function render(node,container){
 	}
 	$container = container;
 	oldNode = node;
-	// $root.appendChild(createElement(oldNode));
 }
 export default render;
 
