@@ -10,11 +10,6 @@ let oldNode;
 let debounceTimeout;
 
 
-function debounce(callback){
-	if( debounceTimeout ) clearTimeout(debounceTimeout);
-	debounceTimeout = setTimeout(callback,100);
-}
-
 function render(node,container){
 	if( debounceTimeout ) clearTimeout(debounceTimeout);
 	debounceTimeout = setTimeout(()=>{
