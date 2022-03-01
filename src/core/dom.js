@@ -15,43 +15,26 @@ function render(node,container){
 	}
 	$container = container;
 	oldNode = node;
+	$container.appendChild(createElement(node));
 }
-export default render;
 
-/*
 function createElement(node){
-	if( typeof node === 'string' || typeof node === 'number' ){
+	// node type 이 string | number 일 경우 Text 이다.
+	if( typeof node === 'string' || typeof node === 'number' ){ 
 		return document.createTextNode(node);
 	}
-
 	const $element = document.createElement(node.tag);
 	const children = node.children.map(createElement);
 
+	/*
+		node.config 값이 undefined 일 수도 있다. 
+		undefined 일 경우 값이 {} 가 될 수 있게 설정했고
+		element 객체에 값을 추가해 준다.
+	*/
 
-	Object.entries(node.config || {})
-		.forEach(([attr,value]) => {
-			const isHandle = attr.includes('on');
-			if( isHandle ){
-				return $element[attr] = value;
-			}
-			switch(attr){
-				case 'className':
-					$element.setAttribute('class',value);
-					break;
-				default :
-					$element.setAttribute(attr,value);
-			}
-		});
-
+	Object.entries(node.config || {}).forEach(([key,value]) => $element[key] = value );
 	children.forEach( $childElement => $element.appendChild($childElement) );
-
 	return $element;
 }
 
-export function updateElement(){
-	
-
-
-	render(renderNode,$root);
-}
-*/
+export default render;
