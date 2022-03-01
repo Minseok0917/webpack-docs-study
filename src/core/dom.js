@@ -11,6 +11,7 @@ let oldNode;
 function render(node,container){
 	if( $container && oldNode ){
 		oldNode = getContainer();
+		$container.appendChild(createElement(oldNode));
 		return;
 	}
 	$container = container;

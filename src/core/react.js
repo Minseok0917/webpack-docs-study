@@ -1,3 +1,4 @@
+import render from '@/core/dom';
 /*
 
 	JSX 구조가 트랜스파일링 되고 함수형태로 바뀐다.
@@ -38,40 +39,37 @@ export let getContainer;
 const React = Object.freeze({
 	createElement : function(type,config,...children){		
 		getContainer ||= () => type(config);		
+		// console.log(type,config,children);
 		if( typeof type === 'function'){
 			return type(config);
 		}
-		return h(type,config,children)
+		return h(type,config,children);
 	}
 });
 
-/*
-let state;
-export function useState(initState){
-	if( state === undefined ){
-		state = initState;
-	}
-	const setState = (newState) => {
-		state = newState;
-		updateElement();
-	}
-	return [state,setState];
-}
-*/
-/*
-export function useState(value){
-	let cureentValue = value;
 
+const states = [];
+let currentStateCount = 0;
 
-	function setState(newValue){
-		cureentValue = newValue;
-		updateElement();
+function useState(initState){
+	const idx = currentStateCount;
+	if( states.length === currentStateCount ){
+		states[idx] = initState;
 	}
-
+	const currentState = states[idx];
+	const setState = function(newState){
+		states[idx] = newState;
+		currentStateCount = 0;
+		render();
+	}
+	currentStateCount++;
 	return [
-		cureentValue,
+		currentState,
 		setState
 	];
-}*/
+}
 
 export default React;
+export {
+	useState
+};
