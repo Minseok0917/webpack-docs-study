@@ -7,16 +7,26 @@ import { getContainer } from '@/core/react';
 
 let $container;
 let oldNode;
+let debounceTimeout;
+
+
+function debounce(callback){
+	if( debounceTimeout ) clearTimeout(debounceTimeout);
+	debounceTimeout = setTimeout(callback,100);
+}
 
 function render(node,container){
-	if( $container && oldNode ){
-		oldNode = getContainer();
-		$container.appendChild(createElement(oldNode));
-		return;
-	}
-	$container = container;
-	oldNode = node;
-	$container.appendChild(createElement(node));
+	if( debounceTimeout ) clearTimeout(debounceTimeout);
+	debounceTimeout = setTimeout(()=>{
+		if( $container && oldNode ){
+			oldNode = getContainer();
+			$container.appendChild(createElement(oldNode));
+			return;
+		}
+		$container = container;
+		oldNode = node;
+		$container.appendChild(createElement(node));
+	},100);
 }
 
 function createElement(node){

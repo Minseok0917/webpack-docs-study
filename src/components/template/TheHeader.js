@@ -3,8 +3,10 @@ import React, { useState } from '@/core/react';
 function Moo(){
 	const [count,setCount] = useState(0);
 	function clickHandle(){
-		console.log(count);
 		setCount(count+1);
+		setCount(count+2);
+		setCount(count+3);
+		setCount(count+4);
 	}
 	return (
 		<div>

@@ -39,7 +39,6 @@ export let getContainer;
 const React = Object.freeze({
 	createElement : function(type,config,...children){		
 		getContainer ||= () => type(config);		
-		// console.log(type,config,children);
 		if( typeof type === 'function'){
 			return type(config);
 		}
@@ -56,17 +55,18 @@ function useState(initState){
 	if( states.length === currentStateCount ){
 		states[idx] = initState;
 	}
-	const currentState = states[idx];
+	const state = states[idx];
 	const setState = function(newState){
 		states[idx] = newState;
-		currentStateCount = 0;
-		render();
+		update();
 	}
 	currentStateCount++;
-	return [
-		currentState,
-		setState
-	];
+	return [state, setState];
+}
+
+function update(){
+	currentStateCount = 0;
+	render();
 }
 
 export default React;
