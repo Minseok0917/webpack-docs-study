@@ -46,7 +46,6 @@ const React = Object.freeze({
 	}
 });
 
-
 const states = [];
 let currentStateCount = 0;
 
@@ -57,6 +56,9 @@ function useState(initState){
 	}
 	const state = states[idx];
 	const setState = function(newState){
+		const currentState = states[idx];
+		if( currentState === newState ) return;
+		else if(JSON.stringify(currentState) === JSON.stringify(newState)) return;
 		states[idx] = newState;
 		update();
 	}
