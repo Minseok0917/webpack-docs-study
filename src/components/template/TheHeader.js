@@ -3,7 +3,7 @@ import React, { useState } from '@/core/react';
 function Moo(){
 	const [count,setCount] = useState(0);
 	function clickHandle(){
-		setCount(count);
+		setCount(count+1);
 	}
 	return (
 		<div>
@@ -15,12 +15,10 @@ function Moo(){
 
 
 export default function(){
-
-	// console.log(countComponent);
-
 	return (
 		<header className="border py-2">
 			<p>Header</p>
+			<p></p>
 			<Moo />
 		</header>
 	);
