@@ -64,15 +64,17 @@ function createElement(node){
 	- children : 재귀로 위에 로직 반복
 
 */
-function updateElement($container, oldNode, newNode, index=0){
+function updateElement($container, oldNode, newNode, childIndex=0){
+	// console.log($container,oldNode,newNode);
 	{ // Create, Delete
 		const isCreate = !oldNode && newNode;
 		const isDelete = oldNode && !newNode;
+		console.log(isCreate,isDelete);
 		if( isCreate ){
-
+			return;
 		}
 		if(isDelete){
-
+			return;
 		}
 	}
 	{ // TextNode
@@ -82,15 +84,15 @@ function updateElement($container, oldNode, newNode, index=0){
 			oldNodeType === 'string' || oldNodeType === 'number' &&
 			newNodeType === 'string' || newNodeType === 'number' 
 		);
-		if( isTextNode ){
-
+		if( isTextNode){
+			return;
 		}
 	}
-	{ // tag
+	{ // Node
 		{  // Replace
 			const isReplace = oldNode.tag !== newNode.tag;
 			if( isReplace ){
-
+				return;
 			}
 		}
 		// updateAttributes();
@@ -100,7 +102,12 @@ function updateElement($container, oldNode, newNode, index=0){
 				newNode.children.length
 			);
 			for(let idx=0; idx<max; idx++){
-				updateElement()				
+				updateElement(
+					$container.childNodes[childIndex],
+					oldNode.children[idx],
+					newNode.children[idx],
+					idx
+				);
 			}
 		}
 	}
