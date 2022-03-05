@@ -65,18 +65,6 @@ function createElement(node){
 
 */
 function updateElement($container, oldNode, newNode, childIndex=0){
-	// console.log($container,oldNode,newNode);
-	{ // Create, Delete
-		const isCreate = !oldNode && newNode;
-		const isDelete = oldNode && !newNode;
-		console.log(isCreate,isDelete);
-		if( isCreate ){
-			return;
-		}
-		if(isDelete){
-			return;
-		}
-	}
 	{ // TextNode
 		const oldNodeType = typeof oldNode;
 		const newNodeType = typeof newNode;
@@ -84,18 +72,30 @@ function updateElement($container, oldNode, newNode, childIndex=0){
 			oldNodeType === 'string' || oldNodeType === 'number' &&
 			newNodeType === 'string' || newNodeType === 'number' 
 		);
-		if( isTextNode){
+		// console.log($container,newNode);
+		if( isTextNode ){
+			$container.textContent = newNode;
 			return;
+		}
+	}
+	{ // Create, Delete
+		const isCreate = !oldNode && newNode;
+		const isDelete = oldNode && !newNode;
+		if( isCreate ){
+			return $container.appendChild(createElement(newNode));
+		}
+		if(isDelete){
+			return $container.removeChild($container.childNodes[childIndex]);
 		}
 	}
 	{ // Node
 		{  // Replace
 			const isReplace = oldNode.tag !== newNode.tag;
 			if( isReplace ){
-				return;
+				return $container.replaceChild(createElement(newNode),$container.childNodes[childIndex]);
 			}
 		}
-		// updateAttributes();
+		updateAttributes($container,oldNode,newNode);;
 		{ // Recursion
 			const max = Math.max(
 				oldNode.children.length,
@@ -111,8 +111,9 @@ function updateElement($container, oldNode, newNode, childIndex=0){
 			}
 		}
 	}
-
-
+}
+function updateAttributes($container, oldNode, newNode){
+	Object.entries(newNode.config || {}).forEach( ([key,value]) => $container[key] = value );
 }
 
 export default render;

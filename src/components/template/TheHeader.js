@@ -5,10 +5,13 @@ function Moo(){
 	function clickHandle(){
 		setCount(count+1);
 	}
+	const title = count%2 === 0 ? <h1>짝수</h1> : <h2>홀수</h2>
+
 	return (
 		<div>
 			<button onclick={clickHandle}>ADD COUNT</button>
 			<p>{count}</p>
+			{title}
 		</div>
 	);
 }
