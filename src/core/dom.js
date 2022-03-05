@@ -79,24 +79,20 @@ function createElement(node){
 
 */
 function updateElement($container, oldNode, newNode, childIndex=0){
-	if( Array.isArray(newNode)  ){
-		return newNode.forEach( (node,idx) => {
-			updateElement($container,oldNode[idx],node,childIndex);
-		})
-	}
-
-	{ // TextNode
-		const oldNodeType = typeof oldNode;
-		const newNodeType = typeof newNode;
-		const isTextNode = (
-			oldNodeType === 'string' || oldNodeType === 'number' &&
-			newNodeType === 'string' || newNodeType === 'number' 
+	if( Array.isArray(newNode) ){
+		const max = Math.max(
+			oldNode.length,
+			newNode.length
 		);
-		if( isTextNode ){
-			if( oldNode === newNode ) return;
-			$container.textContent = newNode;
-			return;
+		for(let i=0; i<max; i++){
+			updateElement(
+				$container,
+				oldNode[i],
+				newNode[i],
+				childIndex+i
+			);
 		}
+		return;
 	}
 	{ // Create, Delete
 		const isCreate = !oldNode && newNode;
@@ -105,7 +101,18 @@ function updateElement($container, oldNode, newNode, childIndex=0){
 			return $container.appendChild(createElement(newNode));
 		}
 		if(isDelete){
+			console.log(childIndex);
 			return $container.removeChild($container.childNodes[childIndex]);
+		}
+	}
+	{ // TextNode
+		const oldNodeType = typeof oldNode;
+		const newNodeType = typeof newNode;
+		const isTextNode = ( oldNodeType === 'string'  && newNodeType === 'string' );
+		if( isTextNode ){
+			if( oldNode === newNode ) return;
+			$container.textContent = newNode;
+			return;
 		}
 	}
 	{ // Node
@@ -115,7 +122,7 @@ function updateElement($container, oldNode, newNode, childIndex=0){
 				return $container.replaceChild(createElement(newNode),$container.childNodes[childIndex]);
 			}
 		}
-		updateAttributes($container,oldNode,newNode);;
+		updateAttributes($container,oldNode,newNode,childIndex);
 		{ // Recursion
 			const max = Math.max(
 				oldNode.children.length,
@@ -132,8 +139,11 @@ function updateElement($container, oldNode, newNode, childIndex=0){
 		}
 	}
 }
-function updateAttributes($container, oldNode, newNode){
-	Object.entries(newNode.config || {}).forEach( ([key,value]) => $container[key] = value );
+function updateAttributes($container, oldNode, newNode,childIndex){
+
+	Object.entries(newNode.config || {}).forEach( ([key,value]) => {
+		$container.childNodes[childIndex][key] = value;
+	} );
 }
 
 export default render;
