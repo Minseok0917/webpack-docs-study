@@ -140,7 +140,9 @@ function updateElement($container, oldNode, newNode, childIndex=0){
 	}
 }
 function updateAttributes($container, oldNode, newNode,childIndex){
-
+	Object.entries(oldNode.config || {}).forEach( ([key,value]) => { // 이전 속성 값 초기화
+		$container.childNodes[childIndex][key] = '';
+		
 	Object.entries(newNode.config || {}).forEach( ([key,value]) => {
 		$container.childNodes[childIndex][key] = value;
 	} );
