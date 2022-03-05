@@ -29,7 +29,16 @@ function createElement(node){
 	// node type 이 string | number 일 경우 Text 이다.
 	if( typeof node === 'string' || typeof node === 'number' ){ 
 		return document.createTextNode(node);
+	}else if( Array.isArray(node) ){
+		return node.map( (item) => {
+			const $element = document.createElement(node.tag);
+			const children = node.children.map(createElement);
+			Object.entries(node.config || {}).forEach(([key,value]) => $element[key] = value );
+			children.forEach( $childElement => $element.appendChild($childElement) );
+			return $element;
+		})
 	}
+
 	const $element = document.createElement(node.tag);
 	const children = node.children.map(createElement);
 	/*
@@ -39,7 +48,12 @@ function createElement(node){
 	*/
 
 	Object.entries(node.config || {}).forEach(([key,value]) => $element[key] = value );
-	children.forEach( $childElement => $element.appendChild($childElement) );
+	children.forEach( $childElement => {
+		if( Array.isArray($childElement) ){
+			return $childElement.forEach( $childElementItem => $element.appendChild($childElementItem) )
+		}
+		return $element.appendChild($childElement);
+	} );
 	return $element;
 }
 
@@ -65,6 +79,12 @@ function createElement(node){
 
 */
 function updateElement($container, oldNode, newNode, childIndex=0){
+	if( Array.isArray(newNode)  ){
+		return newNode.forEach( (node,idx) => {
+			updateElement($container,oldNode[idx],node,childIndex);
+		})
+	}
+
 	{ // TextNode
 		const oldNodeType = typeof oldNode;
 		const newNodeType = typeof newNode;
@@ -72,8 +92,8 @@ function updateElement($container, oldNode, newNode, childIndex=0){
 			oldNodeType === 'string' || oldNodeType === 'number' &&
 			newNodeType === 'string' || newNodeType === 'number' 
 		);
-		// console.log($container,newNode);
 		if( isTextNode ){
+			if( oldNode === newNode ) return;
 			$container.textContent = newNode;
 			return;
 		}

@@ -27,6 +27,12 @@ import render from '@/core/dom';
 */ 
 
 function h(tag,config,children){
+	const isTextNode = children.every( text =>  ['string','number'].includes(typeof text));
+	// const isArray = children.some(  )
+	if( isTextNode ){
+		children = [children.join('')];
+	}
+
 	return {
 		tag,
 		config,
