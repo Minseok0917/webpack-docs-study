@@ -1,9 +1,5 @@
 import { getContainer } from '@/core/react';
-/*
 
-	가상돔을 사용하기 위한 곳
-
-*/
 
 let $container;
 let oldNode;
@@ -26,26 +22,15 @@ function render(node,container){
 }
 
 function createElement(node){
-	// node type 이 string | number 일 경우 Text 이다.
 	if( typeof node === 'string' || typeof node === 'number' ){ 
 		return document.createTextNode(node);
 	}else if( Array.isArray(node) ){
-		return node.map( (item) => {
-			const $element = document.createElement(node.tag);
-			const children = node.children.map(createElement);
-			Object.entries(node.config || {}).forEach(([key,value]) => $element[key] = value );
-			children.forEach( $childElement => $element.appendChild($childElement) );
-			return $element;
-		})
+		return node.map(createElement);
 	}
 
 	const $element = document.createElement(node.tag);
 	const children = node.children.map(createElement);
-	/*
-		node.config 값이 undefined 일 수도 있다. 
-		undefined 일 경우 값이 {} 가 될 수 있게 설정했고
-		element 객체에 값을 추가해 준다.
-	*/
+	
 
 	Object.entries(node.config || {}).forEach(([key,value]) => $element[key] = value );
 	children.forEach( $childElement => {
@@ -58,26 +43,7 @@ function createElement(node){
 }
 
 
-/*
 
-	생성 : oldNode 에는 없고 newNode에는 존재 
-	수정 : Text 변경., config 데이터 변경
-	삭제 : oldNode에는 있으나 newNode에는 없음
-
-*/
-
-/*
-	node 타입 
-	- undefined : node 값이 존재하지 않음 ( 추가,삭제여부를 파악할 때 사용)
-	- string, number : text 
-	- object : element structor
-
-	Node Object 처리 
-	- tag : 서로 다를 시 새로운 객체로 바꿔야한다.
-	- config : config 값이 다를 경우 기존 속성값을 변환시켜줘야한다.
-	- children : 재귀로 위에 로직 반복
-
-*/
 function updateElement($container, oldNode, newNode, childIndex=0){
 	if( Array.isArray(newNode) ){
 		const max = Math.max(
@@ -101,7 +67,6 @@ function updateElement($container, oldNode, newNode, childIndex=0){
 			return $container.appendChild(createElement(newNode));
 		}
 		if(isDelete){
-			console.log(childIndex);
 			return $container.removeChild($container.childNodes[childIndex]);
 		}
 	}
